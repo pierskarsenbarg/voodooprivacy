@@ -5,26 +5,43 @@
 #
 # See http://www.sarfata.org/posts/setting-up-an-amazon-vpn-server.md
 #
-# DO NOT RUN THIS SCRIPT ON YOUR MAC! THIS IS MEANT TO BE RUN WHEN 
+# DO NOT RUN THIS SCRIPT ON YOUR MAC! THIS IS MEANT TO BE RUN WHEN
 # YOUR AMAZON INSTANCE STARTS!
 #
 # Copyright Thomas Sarlandie 2012
 #
-# This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 
+# This work is licensed under the Creative Commons Attribution-ShareAlike 3.0
 # Unported License: http://creativecommons.org/licenses/by-sa/3.0/
 #
 # Attribution required: please include my name in any derivative and let me
-# know how you have improved it! 
+# know how you have improved it!
+
+if [ -z $IPSEC_KEY ]; then
+  echo "You must specify an IPSEC key"
+  exit 1
+fi
+
+if [ -z $VPN_USER ]; then
+  echo "You must specify a VPN user name"
+  exit 1
+fi
+
+if [ -z $VPN_PASSWORD ]; then
+  echo "You must specify a VPN password"
+  exit 1
+fi
 
 if [[ "`uname`" == "Darwin" ]]; then
     echo "Do not run this script on your mac! This script should only be run on a newly-created EC2 instance, after you have modified it to set the three variables below."
     exit 1
 fi
 
+
+
 # Please define your own values for those variables
-IPSEC_PSK=very_unsecure_key
-VPN_USER=johndoe
-VPN_PASSWORD=unsecure
+IPSEC_PSK=$IPSEC_KEY
+VPN_USER=$VPN_USER
+VPN_PASSWORD=$VPN_PASSWORD
 
 # Those two variables will be found automatically
 PRIVATE_IP=`wget -q -O - 'http://169.254.169.254/latest/meta-data/local-ipv4'`

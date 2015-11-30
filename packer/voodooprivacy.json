@@ -1,7 +1,10 @@
 {
   "variables": {
     "aws_access_key": "",
-    "aws_secret_key": ""
+    "aws_secret_key": "",
+    "ipsec_key": "",
+    "vpn_username": "",
+    "vpn_password": ""
   },
   "builders": [{
     "type": "amazon-ebs",
@@ -16,6 +19,11 @@
   "provisioners": [{
     "type": "shell",
     "script": "../voodoo-vpn.sh",
-    "execute_command": "echo 'packer' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+    "execute_command": "echo 'packer' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
+    "environment_vars": [
+      "IPSEC_KEY={{user `ipsec_key`}}",
+      "VPN_USER={{user `vpn_username`}}",
+      "VPN_PASSWORD={{user `vpn_password`}}"
+    ]
     }]
 }
